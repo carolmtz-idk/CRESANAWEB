@@ -28,7 +28,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(36, 66, 16, 0.26);
   backdrop-filter: blur(12px);
   padding: 15px 40px;
   border-radius: 50px;
@@ -633,6 +633,7 @@ footer {
     height: 180px;
   }
 }
+
 
 
 
