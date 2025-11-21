@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRESANA | Nutrición Infantil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="./image/logo-cresana-buenoo.png" alt="Logo CRESANA">
+            <h1>CRESANA</h1>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="login.html" id="btnLogin" class="nav-btn">Iniciar sesión</a>
+            <a href="registro.html" id="btnRegister" class="nav-btn">Registrarse</a>
+
+            <!-- Aquí aparecerá el nombre del usuario -->
+            <span id="userName"></span>
+
+            <!-- Botones dinámicos -->
+            <button id="historialBtn" class="historial-btn" style="display:none;">
+                Ver Historial de Mi Hijo
+            </button>
+            <button id="btnLogout" class="btn-cerrar" style="display:none;">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <div class="text-section">
+                <h2>La Nutrición Infantil</h2>
+                <p>
+                    En CRESANA fomentamos la nutrición y el cuidado integral de la salud en niños y adolescentes.
+                    Nuestro compromiso es crear conciencia en las familias y en la comunidad, impulsando estilos de
+                    vida saludables que fortalezcan el presente y construyan un futuro más saludable para todos.
+                    <br><br>
+                    A través de nuestros programas y proyectos, buscamos que cada familia comprenda la importancia de una dieta variada,
+                    rica en frutas, verduras y alimentos naturales, así como la necesidad de mantener una rutina activa
+                    que incluya el ejercicio físico y el descanso adecuado.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <section class="nutricion-section">
+        <h2 class="titulo">La nutrición en niños</h2>
+        <div class="cards-container">
+            <div class="card">
+                <a href="https://www.unicef.org/es/nutricion-primera-infancia">
+                    <img src="./image/alimentacionB.jpg" alt="Niño comiendo">
+                    <h3>Alimentación balanceada en la primera infancia</h3>
+                    <p>Descubre los nutrientes esenciales que necesitan los niños durante sus primeros años para un desarrollo óptimo.</p>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://clinicaeugeniosue.com.mx/alergias-alimentarias-en-ninos-identificacion-y-manejo-efectivo/">
+                    <img src="./image/Alergias.png" alt="Doctora midiendo a niña">
+                    <h3>Manejo de alergias alimentarias en niños</h3>
+                    <p>Guía completa para identificar, prevenir y manejar las alergias alimentarias más comunes en la población infantil.</p>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://www.deustosalud.com/cursos/cursos-nutricion-dietetica/curso-alimentacion-nutricion-pediatrica/funciones-nutricionista-infantil">
+                    <img src="./image/nutricionista2.webp" alt="Báscula infantil">
+                    <h3>El rol del nutricionista pediátrico</h3>
+                    <p>Los profesionales de la nutrición infantil desempeñan un papel fundamental en la promoción de una alimentación equilibrada desde los primeros años de vida.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="fondo-amarillo"></div>
+        <div class="fondo-amarillo-2"></div>
+        <div class="fondo-amarillo-3"></div>
+    </section>
+
+    <section class="educacion-nutricional">
+        <h2>Educación Nutricional</h2>
+        <div class="grid-educacion">
+            <div class="card text-card">
+                <h3>Cómo interpretar el IMC infantil</h3>
+                <p>El IMC ayuda a conocer si el peso del niño es adecuado para su edad y estatura. Un control constante previene obesidad o desnutrición.</p>
+                <button>Leer más</button>
+            </div>
+
+            <div class="card img-card" style="background-image: url('./image/222.jpg');"></div>
+
+            <div class="card text-card">
+                <h3>Importancia de la hidratación</h3>
+                <p>Beber suficiente agua mejora la concentración, el rendimiento físico y evita la deshidratación.</p>
+                <button>Leer más</button>
+            </div>
+
+            <div class="card img-card" style="background-image: url('./image/hhhhhh.jpg');"></div>
+
+            <div class="card text-card">
+                <h3>Alimentos saludables para niños</h3>
+                <p>Frutas, verduras y granos integrales son la base de una buena alimentación. Evita azúcares y ultraprocesados.</p>
+                <button>Leer más</button>
+            </div>
+
+            <div class="card img-card" style="background-image: url('./image/Rrrrr.png');"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="contacto">
+            <h3>Contacto</h3>
+            <p>Email: <a href="mailto:CRESANA@gmail.com">CRESANA@gmail.com</a></p>
+            <p>Teléfono: +52 8123 7890 006</p>
+        </div>
+        <div class="derechos">
+            <p>Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+
+    <script>
+      // --- Mostrar el nombre del usuario si ya inició sesión ---
+      document.addEventListener("DOMContentLoaded", () => {
+        const nombre = localStorage.getItem("nombreUsuario");
+        if (nombre) {
+          document.getElementById("userName").textContent = `👋 Bienvenido, ${nombre}`;
+          document.getElementById("btnLogin").style.display = "none";
+          document.getElementById("btnRegister").style.display = "none";
+          document.getElementById("historialBtn").style.display = "inline-block";
+          document.getElementById("btnLogout").style.display = "inline-block";
+        }
+
+        document.getElementById("btnLogout").addEventListener("click", () => {
+          localStorage.clear();
+          window.location.href = "index.html";
+        });
+
+        document.getElementById("historialBtn").addEventListener("click", () => {
+          window.location.href = "historial.html";
+        });
+      });
+    </script>
+</body>
+</html>

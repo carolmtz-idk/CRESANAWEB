@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
+
+ body {
+      background: linear-gradient(to bottom right, #89ff6b, #223f06);
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Cuadro blanco translúcido */
+    .main-box {
+      background: rgba(255, 255, 255, 0.158);
+      backdrop-filter: blur(12px);
+      border-radius: 25px;
+      padding: 30px 20px;
+      margin-left: 100px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+      width: 400px; /* ancho fijo */
+      max-width: 90%; /* para que se ajuste si la pantalla es chica */
+    }
+
+    .illustration {
+      margin-right: 80px;
+    }
+
+    /* Contenido centrado dentro del cuadro */
+    .container {
+      text-align: center;
+    }
+
+    /* Título principal */
+    .container h1 {
+      font-size: 32px;
+      color: #000;
+      margin-bottom: 20px;
+      font-family: "Kumbh Sans", sans-serif;
+      font-weight: 600;
+      font-style: normal;
+      font-variation-settings: "YOPQ" 300;
+    }
+
+    /* Subtítulo */
+    .registro-form h2 {
+      color: #000;
+      margin-bottom: 25px;
+      font-family: "Zain", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      font-size: 24px;
+    }
+
+    .registro-form h3 {
+      color: #000;
+      margin-bottom: 20px;
+      font-family: "Zain", sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    /* Campos de entrada */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"] {
+      width: 60%;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 19px;
+      background-color: rgba(255, 255, 255, 0.856);
+      font-size: 1rem;
+      text-align: center;
+      font-weight: 500;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    input:focus {
+      box-shadow: 0 0 5px #38b6ff;
+    }
+
+    /* Botón */
+    button {
+      background-color: #126b8a;
+      color: white;
+      border: none;
+      width: 60%;
+      padding: 12px 40px;
+      border-radius: 25px;
+      font-size: 17px;
+      font-family: "Zain", sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: white;
+      color: #126b8a;
+    }
+
+    /* Enlace de registro */
+    p {
+      margin-top: 15px;
+      font-size: 15px;
+      color: black;
+      font-family: "Zain", sans-serif;
+      font-weight: 700;
+    }
+
+    p a {
+      color: #0048ff;
+      text-decoration: none;
+    }
+
+    p a:hover {
+      text-decoration: underline;
+    }
+
+/* Botones de selección (Tutor / Médico) */
+.user-type-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.selector-btn {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #000;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-family: "Zain", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.selector-btn:hover {
+  background-color: #126b8a;
+  color: white;
+}
+
+.selector-btn.active {
+  background-color: #126b8a;
+  color: white;
+}
+
+/* Ajuste para que los formularios no cambien de tamaño */
+.registro-form {
+  min-height: 360px; /* mantiene la altura estable aunque cambie el contenido */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.registro-form[style*="display: none"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Animación / sección visual */
+.lottie-section {
+  width: 350px;
+  height: 350px;
+  margin-right: 150px;
+}
+
+/* Variante responsive: reducir tamaño en pantallas pequeñas */
+@media (max-width: 480px) {
+.lottie-section {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+.swal2-popup {
+  border-radius: 20px !important;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.swal2-popup .swal2-actions {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 50% !important;
+  margin: 10 auto !important;
+  text-align: center !important;
+}
+
+.swal2-title {
+  color: #0054a6 !important;
+  font-weight: 700;
+}
+
+.swal2-html-container {
+  font-size: 15px !important;
+  color: #444 !important;
+}
+
+.swal2-confirm {
+  border-radius: 10px !important;
+  background-color: #0054a6 !important;
+  font-weight: 600 !important;
+  padding: 10px 30px !important;
+}
+
+.swal2-confirm:hover {
+  background-color: #003f7d !important;
+}
+
+
+/* ==========================================
+      FIX REAL SOLO PARA CELULAR
+   ========================================== */
+
+@media (max-width: 768px) {
+
+  /* Quitar flex horizontal que rompe todo */
+  body {
+    display: block;
+    height: auto;
+    overflow-y: auto;
+    padding-top: 25px;
+  }
+
+  /* Botones arriba y centrados */
+  .user-type-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 auto 15px auto;
+  }
+
+  /* Botones más pequeños */
+  .selector-btn {
+    width: 40%;
+    padding: 10px 0;
+    font-size: 15px;
+  }
+
+  /* Recuadro del formulario */
+  .main-box {
+    margin: 0 auto;
+    margin-bottom: 20px;
+    width: 90%;
+    max-width: 380px;
+  }
+
+  /* Animación ABAJO y centrada */
+  .lottie-section {
+    margin: 20px auto;
+    display: block;
+    width: 250px !important;
+    height: 250px !important;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .selector-btn {
+    width: 45%;
+    padding: 8px 0;
+    font-size: 13px;
+  }
+
+  .lottie-section {
+    width: 180px !important;
+    height: 180px !important;
+  }
+}
+
+
+
+

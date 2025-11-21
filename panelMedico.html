@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel del Médico - CRESANA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #a8dca8, #f1faee, #e5e5e5);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      padding: 20px;
+      background: rgba(12, 100, 1, 0.795);
+      backdrop-filter: blur(10px);
+      color: white;
+      font-size: 28px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    #bienvenida {
+      margin-top: 25px;
+      font-size: 26px;
+      color: #22543d;
+      font-weight: 600;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    #contenedor {
+      width: 90%;
+      max-width: 1000px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 25px;
+      position: relative;
+      color: #2f2f2f;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      animation: aparecer 0.5s ease forwards;
+    }
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card h3 {
+      color: #1b4332;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .card p {
+      margin: 5px 0;
+      font-size: 15px;
+      color: #333;
+    }
+    .card input {
+      width: 100%;
+      margin: 4px 0;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .medicion {
+      background: rgba(255, 255, 255, 0.4);
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #1d3557;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+    }
+    .mensaje {
+      grid-column: 1/-1;
+      font-size: 20px;
+      color: #4a5568;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* === MENÚ DE 3 PUNTOS === */
+    .menu-container {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .menu-btn {
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      color: #22543d;
+    }
+
+    .menu-btn:hover {
+      background: rgba(0,0,0,0.08);
+    }
+
+    .menu-options {
+      display: none;
+      position: absolute;
+      right: 0;
+      margin-top: 5px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .menu-options button {
+      width: 100%;
+      padding: 10px 15px;
+      background: white;
+      border: none;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .menu-options button:hover {
+      background: #e6f4ea;
+    }
+
+    .menu-options .eliminar {
+      color: #c53030;
+    }
+
+    /* === BOTONES DE SESIÓN === */
+    .acciones-sesion {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .acciones-sesion button {
+      background: #067214;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 5px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* === BOTONES DE EDITADO === */
+    .btn-editar-acciones {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-editar {
+      background: linear-gradient(135deg, #38a169, #2f855a);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    .btn-editar:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #2f855a, #276749);
+    }
+
+    .btn-cancelar {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    .btn-cancelar:hover {
+      transform: scale(1.05);
+      background: #c53030;
+    }
+
+    /* === IMPRESIÓN === */
+    @media print {
+      button,
+      .no-imprimir,
+      .acciones-sesion,
+      .menu-container {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      .ocultar-en-impresion {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Panel Médico</header>
+  <h2 id="bienvenida"></h2>
+
+  <div id="contenedor">
+    <p class="mensaje">Cargando pacientes...</p>
+  </div>
+
+  <div class="acciones-sesion no-imprimir">
+    <button id="inicio">Volver al inicio</button>
+    <button id="logout">Cerrar sesión</button>
+    <button id="btnImprimir">Imprimir todo</button>
+  </div>
+
+  <script>
+    document.getElementById("btnImprimir").addEventListener("click", () => {
+      window.print();
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { 
+      getFirestore, collection, getDocs, doc, deleteDoc, updateDoc,
+      query, orderBy, limit, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+    import { cerrarSesion, volverAlInicio } from "./app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBSdq00vH2j95_LI2LCnu6TO7HjAl43wKg",
+      authDomain: "cresana-eebb5.firebaseapp.com",
+      projectId: "cresana-eebb5"
+    };
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const uidMedico = localStorage.getItem("uid");
+    const nombreMedico = localStorage.getItem("nombreUsuario");
+    const contenedor = document.getElementById("contenedor");
+    const bienvenida = document.getElementById("bienvenida");
+
+    document.getElementById("logout").addEventListener("click", cerrarSesion);
+    document.getElementById("inicio").addEventListener("click", volverAlInicio);
+
+    if (nombreMedico) bienvenida.textContent = `Bienvenido, Dr. ${nombreMedico}`;
+
+    if (!uidMedico) {
+      contenedor.innerHTML = "<p class='mensaje'>No hay sesión activa. Inicia sesión nuevamente.</p>";
+    } else {
+      cargarPacientesTiempoReal(uidMedico);
+    }
+
+function cargarPacientesTiempoReal(uidMedico) {
+  contenedor.innerHTML = "<p class='mensaje'>Buscando pacientes...</p>";
+
+  const patientsRef = collection(db, "users", uidMedico, "patients");
+
+  onSnapshot(patientsRef, async (snapshot) => {
+    if (snapshot.empty) {
+      contenedor.innerHTML = "<p class='mensaje'>No hay pacientes registrados.</p>";
+      return;
+    }
+
+    let html = "";
+
+    for (const docSnap of snapshot.docs) {
+      const d = docSnap.data();
+
+      const medRef = collection(db, "users", uidMedico, "patients", docSnap.id, "measurements");
+      const q = query(medRef, orderBy("utcCreatedAt", "desc"));
+
+      let medicionHTML = "<p><i>Cargando mediciones...</i></p>";
+
+      await new Promise((resolve) => {
+        onSnapshot(q, (medSnap) => {
+          if (medSnap.empty) {
+            medicionHTML = "<p>No hay mediciones registradas.</p>";
+          } else {
+            medicionHTML = "";
+            medSnap.forEach((med) => {
+              const m = med.data();
+              medicionHTML += `
+                <div class="medicion">
+                  <b>Fecha:</b> ${m.utcCreatedAt ? m.utcCreatedAt.toDate().toLocaleString() : "Sin fecha"}<br>
+                  <b>Peso:</b> ${m.weightKg} kg<br>
+                  <b>Altura:</b> ${m.heightMeters} m<br>
+                  <b>IMC:</b> ${m.bmi}<br>
+                  <b>Categoría:</b> ${m.category}
+                </div>
+              `;
+            });
+          }
+          resolve();
+        });
+      });
+
+      html += `
+        <div class="card" id="p_${docSnap.id}">
+          
+          <!-- Menú 3 puntitos -->
+          <div class="menu-container">
+            <button class="menu-btn" onclick="toggleMenu('${docSnap.id}')">⋮</button>
+            <div class="menu-options" id="menu_${docSnap.id}">
+              <button onclick="editarPaciente('${uidMedico}', '${docSnap.id}')">Editar</button>
+              <button class="eliminar" onclick="eliminarPaciente('${uidMedico}', '${docSnap.id}')">Eliminar</button>
+              <button onclick="imprimirPaciente('p_${docSnap.id}')">Imprimir historial</button>
+            </div>
+          </div>
+
+          <h3>${d.childName}</h3>
+
+          <div class="datos">
+            <p><b>Edad:</b> ${d.ageYears} años</p>
+            <p><b>Sexo:</b> ${d.sex}</p>
+            <p><b>Tipo de sangre:</b> ${d.bloodType}</p>
+            <p><b>Padre/Madre:</b> ${d.parentName}</p>
+            <p><b>Teléfono:</b> ${d.parentPhone}</p>
+            <p><b>Lugar de nacimiento:</b> ${d.birthPlace}</p>
+          </div>
+
+          ${medicionHTML}
+
+        </div>
+      `;
+    }
+
+    contenedor.innerHTML = html;
+  });
+}
+
+/* === BORRAR === */
+window.eliminarPaciente = async (uidMedico, idPaciente) => {
+  if (confirm("¿Seguro que deseas eliminar este paciente?")) {
+    await deleteDoc(doc(db, "users", uidMedico, "patients", idPaciente));
+    alert("Paciente eliminado.");
+  }
+};
+
+/* === EDITAR === */
+window.editarPaciente = (uidMedico, idPaciente) => {
+  const card = document.getElementById(`p_${idPaciente}`);
+  const d = Object.fromEntries(
+    [...card.querySelectorAll(".datos p")].map(p => {
+      const [label, value] = p.innerText.split(": ");
+      return [label.trim(), value];
+    })
+  );
+
+  const nombre = card.querySelector("h3").innerText;
+
+  card.querySelector(".datos").innerHTML = `
+    <label><b>Nombre:</b><input type="text" id="nombre_${idPaciente}" value="${nombre}"></label>
+    <label><b>Edad (años):</b><input type="number" id="edad_${idPaciente}" value="${d['Edad'] || ''}"></label>
+    <label><b>Sexo:</b><input type="text" id="sexo_${idPaciente}" value="${d['Sexo'] || ''}"></label>
+    <label><b>Tipo de sangre:</b><input type="text" id="sangre_${idPaciente}" value="${d['Tipo de sangre'] || ''}"></label>
+    <label><b>Padre/Madre:</b><input type="text" id="padre_${idPaciente}" value="${d['Padre/Madre'] || ''}"></label>
+    <label><b>Teléfono:</b><input type="text" id="telefono_${idPaciente}" value="${d['Teléfono'] || ''}"></label>
+    <label><b>Lugar nacimiento:</b><input type="text" id="lugar_${idPaciente}" value="${d['Lugar de nacimiento'] || ''}"></label>
+  `;
+
+  card.innerHTML += `
+    <div id="edicion_${idPaciente}" class="btn-editar-acciones no-imprimir">
+      <button class="btn-editar" onclick="guardarCambios('${uidMedico}', '${idPaciente}')">Guardar</button>
+      <button class="btn-cancelar" onclick="cancelarEdicion('${uidMedico}')">Cancelar</button>
+    </div>
+  `;
+};
+
+/* === GUARDAR === */
+window.guardarCambios = async (uidMedico, idPaciente) => {
+  const nombre = document.getElementById(`nombre_${idPaciente}`).value.trim();
+  const sexo = document.getElementById(`sexo_${idPaciente}`).value.trim();
+  const sangre = document.getElementById(`sangre_${idPaciente}`).value.trim();
+  const padre = document.getElementById(`padre_${idPaciente}`).value.trim();
+  const telefono = document.getElementById(`telefono_${idPaciente}`).value.trim();
+  const lugar = document.getElementById(`lugar_${idPaciente}`).value.trim();
+
+  await updateDoc(doc(db, "users", uidMedico, "patients", idPaciente), {
+    childName: nombre,
+    sex: sexo,
+    bloodType: sangre,
+    parentName: padre,
+    parentPhone: telefono,
+    birthPlace: lugar,
+    ageYears: Number(edad)
+  });
+
+  alert("Datos actualizados.");
+  cargarPacientesTiempoReal(uidMedico);
+};
+
+window.cancelarEdicion = (uidMedico) => cargarPacientesTiempoReal(uidMedico);
+
+/* === IMPRESIÓN INDIVIDUAL === */
+window.imprimirPaciente = (cardId) => {
+  const contenedor = document.getElementById("contenedor");
+  const cards = contenedor.querySelectorAll(".card");
+  const cardSeleccionada = document.getElementById(cardId);
+
+  cards.forEach(card => {
+    if (card !== cardSeleccionada) card.classList.add("ocultar-en-impresion");
+  });
+
+  window.print();
+
+  setTimeout(() => {
+    cards.forEach(card => card.classList.remove("ocultar-en-impresion"));
+  }, 500);
+};
+
+/* === FUNCIÓN DEL MENÚ === */
+window.toggleMenu = (id) => {
+  const menu = document.getElementById(`menu_${id}`);
+  const abierto = menu.style.display === "block";
+
+  document.querySelectorAll(".menu-options").forEach(m => m.style.display = "none");
+
+  menu.style.display = abierto ? "none" : "block";
+};
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".menu-container")) {
+    document.querySelectorAll(".menu-options").forEach(m => m.style.display = "none");
+  }
+});
+  </script>
+</body>
+</html>

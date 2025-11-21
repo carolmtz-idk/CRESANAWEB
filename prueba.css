@@ -1,0 +1,73 @@
+.educacion-nutricional {
+  padding: 60px 20px;
+  background: #f8fafc;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.educacion-nutricional h2 {
+  font-size: 2em;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.grid-educacion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.card {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* 🟩 Tarjetas de texto */
+.text-card {
+  background: white;
+  padding: 30px 20px;
+}
+
+.text-card h3 {
+  color: #4f46e5;
+  font-size: 1.3em;
+  margin-bottom: 15px;
+}
+
+.text-card p {
+  color: #555;
+  font-size: 0.95em;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.text-card button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.text-card button:hover {
+  background: #3b33c4;
+}
+
+/* 🟨 Tarjetas con imagen */
+.img-card {
+  background-size: cover;
+  background-position: center;
+  height: 260px;
+}

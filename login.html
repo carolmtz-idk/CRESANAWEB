@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión - CRESANA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="login.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="main-box">
+    <div class="container">
+      <h1>¡Bienvenido a Cresana!</h1>
+
+      <form class="login-form" id="loginForm" novalidate>
+        <h2>Inicia Sesión</h2>
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <br>
+        <button type="submit" class="btn-registrar">Ingresar</button>
+        <p>¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="lottie-container" class="lottie-section" style="width:600px; height:600px;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+  <script>
+    var animation = bodymovin.loadAnimation({
+      container: document.getElementById('lottie-container'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: './image/animaciones/saludando1.json' 
+    });
+  </script>
+
+  <!-- Carga el archivo como módulo -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
+
+
+/* Fondo general */
+body {
+  background: linear-gradient(to bottom right, #89ff6b, #223f06);
+  margin: 0;
+  display: flex;
+  justify-content: space-between; /* a la izquierda */
+  align-items: center;
+  height: 100vh;
+}
+
+/* Cuadro blanco translúcido */
+.main-box {
+  background: rgba(255, 255, 255, 0.158); /* fondo translúcido */
+  backdrop-filter: blur(12px); /* efecto glass */         /* efecto vidrio esmerilado */
+  border-radius: 25px;
+  padding: 50px 10px;
+  margin-left: 100px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+}
+
+.illustration {
+  margin-right: 80px;
+}
+
+/* Contenido centrado dentro del cuadro */
+.container {
+  text-align: center;
+}
+
+/* Título principal */
+.container h1 {
+    font-size: 32px;
+    color: #000;
+    margin-bottom: 20px;
+    font-family: "Kumbh Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings:
+    "YOPQ" 300;
+
+}
+
+/* Subtítulo */
+.login-form h2 {
+    color: #000;
+    margin-bottom: 25px;
+    font-family: "Zain", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px;
+}
+
+/* Campos de entrada */
+input[type="email"],
+input[type="password"] {
+  width: 60%;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 19px;
+  background-color: rgba(255, 255, 255, 0.856);
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+input:focus {
+  box-shadow: 0 0 5px #38b6ff;
+}
+
+/* Botón */
+button {
+    background-color: #126b8a;
+    color: white;
+    border: none;
+    width: 60%;
+    padding: 12px 40px;
+    border-radius: 25px;
+    font-size: 17px;
+    font-family: "Zain", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: white;
+  color: #126b8a;
+}
+
+/* Enlace de registro */
+p {
+    margin-top: 15px;
+    font-size: 15px;
+    color: black;
+    font-family: "Zain", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+
+}
+
+p a {
+  color: #0048ff;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+
+/*animcaion de login*/
+.lottie-section {
+  margin-right: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ==== SweetAlert2 personalizado para CRESANA ==== */
+.swal2-popup {
+  border-radius: 20px !important;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.swal2-popup .swal2-actions {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 50% !important;
+  margin: 10 auto !important;
+  text-align: center !important;
+}
+
+.swal2-title {
+  color: #0054a6 !important;
+  font-weight: 700;
+}
+
+.swal2-html-container {
+  font-size: 15px !important;
+  color: #444 !important;
+}
+
+.swal2-confirm {
+  border-radius: 10px !important;
+  background-color: #0054a6 !important;
+  font-weight: 600 !important;
+  padding: 10px 30px !important;
+}
+
+.swal2-confirm:hover {
+  background-color: #003f7d !important;
+}
+
+
+
+/* =====================================
+   FIX DEFINITIVO — ADAPTAR CUADRO AL MÓVIL
+   ===================================== */
+
+@media (max-width: 768px) {
+
+  /* Quitar el flex que estira todo */
+  body {
+    display: block !important;
+    height: auto !important;
+    padding-top: 30px;
+    padding-bottom: 40px;
+  }
+
+  /* El cuadro por fin respetará su tamaño */
+  .main-box {
+    width: 90% !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
+    padding: 30px 20px !important;
+  }
+
+  /* Inputs y botón centrados */
+  input[type="email"],
+  input[type="password"],
+  button {
+    width: 85% !important;
+    margin: 10px auto !important;
+    display: block !important;
+  }
+
+  /* Animación centrada */
+  .lottie-section {
+    margin: 25px auto 0 auto !important;
+    width: 240px !important;
+    height: 240px !important;
+    text-align: center !important;
+    display: block !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .main-box {
+    width: 92% !important;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  button {
+    width: 90% !important;
+  }
+
+  .lottie-section {
+    width: 170px !important;
+    height: 170px !important;
+  }
+}
+

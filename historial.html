@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Historial de Hijos - CRESANA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* ====== ESTILO GLOBAL ====== */
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #a8dca8, #f1faee, #e5e5e5);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ====== ENCABEZADO ====== */
+    header {
+      width: 100%;
+      padding: 20px;
+      background: rgba(12, 100, 1, 0.795);
+      backdrop-filter: blur(10px);
+      color: white;
+      font-size: 28px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* ====== MENSAJE DE BIENVENIDA ====== */
+    #bienvenida {
+      margin-top: 25px;
+      font-size: 26px;
+      color: #22543d;
+      font-weight: 600;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* ====== CONTENEDOR PRINCIPAL ====== */
+    #contenedor {
+      width: 60%;
+      max-width: 1000px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    /* ====== TARJETAS DE HIJOS ====== */
+    .card {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 25px;
+      position: relative;
+      color: #2f2f2f;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      animation: aparecer 0.5s ease forwards;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card h3 {
+      color: #1b4332;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      margin: 5px 0;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .medicion {
+      background: rgba(255, 255, 255, 0.4);
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #1d3557;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    /* ====== MENSAJE CENTRAL ====== */
+    .mensaje {
+      grid-column: 1/-1;
+      font-size: 20px;
+      color: #4a5568;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* ====== BOTONES ABAJO ====== */
+    .acciones-sesion {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .acciones-sesion button {
+      background: #067214;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 5px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* ====== MENÚ DE 3 PUNTITOS EN CADA CARD ====== */
+    .menu-container {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .menu-btn {
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      color: #22543d;
+    }
+
+    .menu-btn:hover {
+      background: rgba(0,0,0,0.08);
+    }
+
+    .menu-options {
+      display: none;
+      position: absolute;
+      right: 0;
+      margin-top: 5px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .menu-options button {
+      width: 100%;
+      padding: 10px 15px;
+      background: white;
+      border: none;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .menu-options button:hover {
+      background: #e6f4ea;
+    }
+
+    /* ====== ESTILOS IMPRESIÓN ====== */
+    @media print {
+      .no-imprimir,
+      .menu-container {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      .ocultar-en-impresion {
+        display: none !important;
+      }
+    }
+
+    /* ====== ICONO MENÚ LATERAL ====== */
+    .menu-icon {
+      font-size: 20px;
+      cursor: pointer;
+      padding: 10px;
+      color: #0054a6;
+      position: fixed;
+      top: 10px;
+      left: 30px;
+      background: white;
+      border-radius: 10px;
+      z-index: 2000;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* SIDEBAR LATERAL */
+    .sidebar {
+      position: fixed;
+      left: -330px; /* Oculto */
+      top: 0;
+      width: 330px;
+      height: 100%;
+      background: #ffffff;
+      padding: 20px;
+      box-shadow: 3px 0px 10px rgba(0,0,0,0.3);
+      transition: left 0.3s ease;
+      z-index: 1999;
+      overflow-y: auto;
+    }
+
+    .title-panel {
+      text-align: left;
+      margin-top: 90px;
+      margin-bottom: 25px;
+      color: #000000;
+      font-size: 20px;
+    }
+
+    .edu-card {
+      background: #c6ffb598;
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 18px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .edu-card h3 {
+      margin-bottom: 8px;
+      color: #106300;
+      font-size: 16px;
+    }
+
+    .edu-card p {
+      font-size: 14px;
+      color: #000000;
+      line-height: 1.45;
+    }
+
+    .danger-card {
+      background: #c6ffb598;
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 18px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 1500;
+    }
+
+  </style>
+</head>
+<body>
+  <header>Historial de Hijos - CRESANA</header>
+
+  <!-- ICONO MENÚ LATERAL -->
+  <div id="menuIcon" class="menu-icon no-imprimir">☰</div>
+
+  <!-- SIDEBAR INFORMATIVO -->
+  <div id="sidebar" class="sidebar">
+    <h2 class="title-panel">Alimentación Saludable</h2>
+
+    <!-- CARD 1 -->
+    <div class="edu-card">
+      <h3>Ideas de Lunch Saludable</h3>
+      <p><strong>Evita los siguientes alimentos:</strong></p>
+      <ul>
+        <li>Yogur de fresa azucarado</li><br>
+        <li>Galletas Marías, Chokis, Oreo</li><br>
+        <li>Juguitos Papia, Boing, Del Valle Kids</li><br>
+        <li>Sándwich con pan blanco dulce</li><br>
+        <li>Frituras (Takis, Sabritas, Doritos)</li>
+      </ul>
+      <p><strong>Opta por estas opciones saludables:</strong></p>
+      <ul>
+        <li>Yogur natural con fruta picada</li><br>
+        <li>Fruta fresca (manzana, plátano, uvas)</li><br>
+        <li>Agua natural o agua de fruta sin azúcar</li><br>
+        <li>Sándwich con pan integral, pavo y vegetales</li><br>
+        <li>Verduras picadas (zanahoria, pepino) con hummus</li>
+      </ul>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="edu-card">
+      <h3>Comidas y Cenas</h3>
+      <ul>
+        <li>Pasta integral con pollo y verduras al vapor</li><br>
+        <li>Sopa de verduras + proteína magra (pollo, pescado, huevo)</li><br>
+        <li>Arroz integral con atún, aguacate y jitomate</li><br>
+        <li>Ensalada de quinoa con garbanzos y verduras</li><br>
+        <li>Cenas ligeras: yogur natural, huevo revuelto o quesadillas de maíz</li><br>
+        <li>Evitar comer muy tarde para mejorar digestión</li>
+      </ul>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="edu-card">
+      <h3>Recomendaciones por IMC</h3>
+
+      <p><strong>Bajo peso:</strong></p>
+      <ul>
+        <li>Snacks nutritivos cada 3 horas.</li><br>
+        <li>Añadir aguacate, huevo, frijoles o crema de cacahuate.</li><br>
+        <li>Evitar bebidas que llenan sin aportar energía.</li>
+      </ul>
+
+      <p><strong>Sobrepeso:</strong></p>
+      <ul>
+        <li>Reducir pan dulce, refrescos, galletas y jugos.</li><br>
+        <li>Aumentar verduras en cada comida.</li><br>
+        <li>Hacer 30 min de actividad física diaria.</li>
+      </ul>
+
+      <p><strong>Obesidad:</strong></p>
+      <ul>
+        <li>Controlar porciones con platos pequeños.</li><br>
+        <li>Evitar comer frente a pantallas.</li><br>
+        <li>Realizar 45-60 min de actividad física al día.</li><br>
+        <li>No usar comida como premio o castigo.</li>
+      </ul>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="edu-card">
+      <h3>Agua Recomendada</h3>
+      <ul>
+        <li>4-8 años → 1.7 L por día.</li><br>
+        <li>9-13 años → 2.1-2.4 L por día.</li>
+      </ul>
+      <p><strong>Incluye:</strong></p>
+      <ul>
+        <li>Agua pura.</li><br>
+        <li>Frutas hidratantes (sandía, melón, naranja).</li><br>
+        <li>Verduras ricas en agua (pepino, lechuga).</li>
+      </ul>
+      <p><strong>Señales de deshidratación:</strong></p>
+      <ul>
+        <li>Orina muy amarilla.</li><br>
+        <li>Dolor de cabeza.</li><br>
+        <li>Cansancio o irritabilidad.</li>
+      </ul>
+    </div>
+
+    <!-- CARD 5 -->
+    <div class="edu-card danger-card">
+      <h3>Alimentos que Evitar</h3>
+      <ul>
+        <li>Refrescos y jugos industrializados.</li><br>
+        <li>Pan dulce, galletas y postres empaquetados.</li><br>
+        <li>Frituras (Takis, Doritos, Sabritas).</li><br>
+        <li>Embutidos procesados (salchicha, jamón, tocino).</li><br>
+        <li>Cereal de caja azucarado.</li>
+      </ul>
+      <p><strong>¿Por qué evitarlos?</strong></p>
+      <ul>
+        <li>Elevan el azúcar en sangre rápidamente.</li><br>
+        <li>Aumentan riesgo de sobrepeso y obesidad infantil.</li><br>
+        <li>Reducen el apetito por comida nutritiva.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FONDO OSCURO DEL SIDEBAR -->
+  <div id="overlay" class="overlay"></div>
+
+  <h2 id="bienvenida"></h2>
+
+  <div id="contenedor">
+    <p class="mensaje">Cargando información...</p>
+  </div>
+
+  <!-- BOTONES ABAJO -->
+  <div class="acciones-sesion no-imprimir">
+    <button id="inicio">Volver al inicio</button>
+    <button id="logout">Cerrar sesión</button>
+    <button id="btnImprimir">Imprimir todo</button>
+  </div>
+
+  <script>
+    document.getElementById("btnImprimir").addEventListener("click", () => {
+      window.print();
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      where,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+    import { cerrarSesion, volverAlInicio } from "./app.js";
+
+    // Config Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBSdq00vH2j95_LI2LCnu6TO7HjAl43wKg",
+      authDomain: "cresana-eebb5.firebaseapp.com",
+      projectId: "cresana-eebb5"
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const telefonoTutor = localStorage.getItem("telefonoTutor");
+    const nombreTutor = localStorage.getItem("nombreUsuario");
+    const bienvenida = document.getElementById("bienvenida");
+    const contenedor = document.getElementById("contenedor");
+
+    document.getElementById("logout").addEventListener("click", cerrarSesion);
+    document.getElementById("inicio").addEventListener("click", volverAlInicio);
+
+    if (nombreTutor) {
+      bienvenida.textContent = `Bienvenido, ${nombreTutor}`;
+    }
+
+    if (!telefonoTutor) {
+      contenedor.innerHTML = "<p class='mensaje'>No hay sesión activa. Inicia sesión nuevamente.</p>";
+    } else {
+      cargarHijosTiempoReal(telefonoTutor);
+    }
+
+    // === Cargar hijos vinculados en tiempo real ===
+    function cargarHijosTiempoReal(telefono) {
+      contenedor.innerHTML = "<p class='mensaje'>Buscando hijos vinculados...</p>";
+
+      const usersRef = collection(db, "users");
+
+      onSnapshot(usersRef, async (usersSnapshot) => {
+        let hijosEncontrados = [];
+
+        for (const userDoc of usersSnapshot.docs) {
+          const patientsRef = collection(db, "users", userDoc.id, "patients");
+          const q = query(patientsRef, where("parentPhone", "==", telefono));
+
+          await new Promise((resolve) => {
+            onSnapshot(q, (patientsSnapshot) => {
+              patientsSnapshot.forEach(patientDoc => {
+                hijosEncontrados.push({
+                  idUser: userDoc.id,
+                  idPatient: patientDoc.id,
+                  ...patientDoc.data()
+                });
+              });
+              resolve();
+            });
+          });
+        }
+
+        if (hijosEncontrados.length === 0) {
+          contenedor.innerHTML = `<p class="mensaje">No hay hijos registrados para este tutor.</p>`;
+          return;
+        }
+
+        let html = "";
+        for (const hijo of hijosEncontrados) {
+          html += `
+            <div class="card" id="card_${hijo.idPatient}">
+              <!-- MENÚ 3 PUNTITOS -->
+              <div class="menu-container no-imprimir">
+                <button class="menu-btn" onclick="toggleMenu('${hijo.idPatient}')">⋮</button>
+                <div class="menu-options" id="menu_${hijo.idPatient}">
+                  <button onclick="imprimirHijo('card_${hijo.idPatient}')">Imprimir historial</button>
+                </div>
+              </div>
+
+              <h3>${hijo.childName}</h3>
+              <p><b>Lugar de nacimiento:</b> ${hijo.birthPlace}</p>
+              <p><b>Tipo de sangre:</b> ${hijo.bloodType}</p>
+
+              <div id="m_${hijo.idPatient}">
+                <p><i>Cargando mediciones...</i></p>
+              </div>
+            </div>
+          `;
+        }
+
+        contenedor.innerHTML = html;
+
+        // Cargar mediciones de cada hijo
+        hijosEncontrados.forEach(hijo =>
+          escucharMedicionesTiempoReal(hijo.idUser, hijo.idPatient)
+        );
+      });
+    }
+
+    // === Mediciones en tiempo real ===
+    function escucharMedicionesTiempoReal(idUser, idPatient) {
+      const medRef = collection(db, "users", idUser, "patients", idPatient, "measurements");
+
+      onSnapshot(medRef, (snapshot) => {
+        const cont = document.getElementById(`m_${idPatient}`);
+
+        if (snapshot.empty) {
+          cont.innerHTML = "<p>No hay mediciones registradas.</p>";
+          return;
+        }
+
+        let html = "";
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          html += `
+            <div class="medicion">
+              <b>Fecha:</b> ${d.utcCreatedAt ? d.utcCreatedAt.toDate().toLocaleString() : "Sin fecha"}<br>
+              <b>Peso:</b> ${d.weightKg} kg<br>
+              <b>Altura:</b> ${d.heightMeters} m<br>
+              <b>IMC:</b> ${d.bmi}<br>
+              <b>Categoría:</b> ${d.category}
+            </div>
+          `;
+        });
+
+        cont.innerHTML = html;
+      });
+    }
+
+    // === Menú 3 puntos por hijo ===
+    window.toggleMenu = (id) => {
+      const menu = document.getElementById(`menu_${id}`);
+      const abierto = menu.style.display === "block";
+
+      document.querySelectorAll(".menu-options").forEach(m => (m.style.display = "none"));
+      menu.style.display = abierto ? "none" : "block";
+    };
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".menu-container")) {
+        document.querySelectorAll(".menu-options").forEach(m => (m.style.display = "none"));
+      }
+    });
+
+    // === Imprimir solo un hijo ===
+    window.imprimirHijo = (cardId) => {
+      const cards = document.querySelectorAll(".card");
+      const cardSeleccionada = document.getElementById(cardId);
+
+      if (!cardSeleccionada) return;
+
+      cards.forEach(card => {
+        if (card !== cardSeleccionada) card.classList.add("ocultar-en-impresion");
+      });
+
+      window.print();
+
+      setTimeout(() => {
+        cards.forEach(card => card.classList.remove("ocultar-en-impresion"));
+      }, 500);
+    };
+
+    // === Lógica del panel lateral informativo ===
+    const menuIcon = document.getElementById("menuIcon");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    menuIcon.addEventListener("click", () => {
+      sidebar.style.left = "0px";
+      overlay.style.display = "block";
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.style.left = "-330px";
+      overlay.style.display = "none";
+    });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - CRESANA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="registro.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="main-box">
+        <div class="container">
+            <div class="user-type-buttons">
+                <button id="btnTutor" class="selector-btn">Tutor</button>
+                <button id="btnMedico" class="selector-btn">Médico</button>
+            </div>
+
+            <!--Formulario del Tutor -->
+            <form id="formTutor" class="registro-form" style="display: none;" novalidate>
+                <h2>Registro - Tutor</h2>
+                <div class="form-box">
+                    <h3>Datos del tutor</h3>
+                    <input id="nombreTutor" type="text" placeholder="Nombre">
+                    <input id="emailTutor" type="email" placeholder="Correo electrónico">
+                    <input id="telefonoTutor" type="tel" placeholder="Teléfono">
+                    <input id="passwordTutor" type="password" placeholder="Contraseña">
+                    <button type="submit" class="btn-registrar">Registrar</button>
+                </div>
+            </form>
+
+            <!--Formulario del Médico -->
+            <form id="formMedico" class="registro-form" style="display: none;" novalidate>
+                <h2>Registro - Médico</h2>
+                <div class="form-box">
+                    <h3>Datos del médico</h3>
+                    <input id="nombreMedico" type="text" placeholder="Nombre">
+                    <input id="emailMedico" type="email" placeholder="Correo electrónico">
+                    <input id="telefonoMedico" type="tel" placeholder="Teléfono">
+                    <input id="institucionMedico" type="text" placeholder="Institución a la que pertenece">
+                    <input id="passwordMedico" type="password" placeholder="Contraseña">
+                    <button type="submit" class="btn-registrar">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lottie Animation -->
+    <div id="lottie-container" class="lottie-section" style="width:500px; height:500px;"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+    <script>
+        var animation = bodymovin.loadAnimation({
+            container: document.getElementById('lottie-container'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: './image/animaciones/tigre.json'
+        });
+    </script>
+
+    <!-- Script para alternar formularios -->
+    <script>
+        const btnTutor = document.getElementById('btnTutor');
+        const btnMedico = document.getElementById('btnMedico');
+        const formTutor = document.getElementById("formTutor");
+        const formMedico = document.getElementById("formMedico");
+
+        btnTutor.addEventListener('click', () => {
+            formTutor.style.display = 'block';
+            formMedico.style.display = 'none';
+            btnTutor.classList.add('active');
+            btnMedico.classList.remove('active');
+        });
+
+        btnMedico.addEventListener('click', () => {
+            formMedico.style.display = 'block';
+            formTutor.style.display = 'none';
+            btnMedico.classList.add('active');
+            btnTutor.classList.remove('active');
+        });
+    </script>
+    <script type="module" src="app.js"></script>
+
+</body>
+</html>

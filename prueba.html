@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego del Plato Saludable</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      background-color: #f4f9f4;
+    }
+
+    h1 {
+      color: #2e7d32;
+    }
+
+    .game-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      gap: 40px;
+    }
+
+    .food-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .food {
+      width: 60px;
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+
+    .food:hover {
+      transform: scale(1.1);
+    }
+
+    .plate {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff 70%, #ddd);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dropped {
+      position: absolute;
+      width: 60px;
+      pointer-events: none;
+      transition: transform 0.2s;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    #revisar { background-color: #2196F3; }
+    #reiniciar { background-color: #4CAF50; }
+
+    #mensaje {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 15px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    .error {
+      background-color: #ffcdd2;
+      color: #b71c1c;
+    }
+
+    .success {
+      background-color: #c8e6c9;
+      color: #1b5e20;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍎 Juego del Plato Saludable</h1>
+
+  <div class="game-container">
+    <div class="food-container">
+      <img src="/image/brocoli.png" class="food" data-type="saludable" draggable="true">
+      <img src="/image/coca.png" class="food" data-type="chatarra" draggable="true">
+      <img src="/image/hamburguesa.png" class="food" data-type="chatarra" draggable="true">
+      <img src="/image/fresas.png" class="food" data-type="saludable" draggable="true">
+    </div>
+
+    <div class="plate" id="plate"></div>
+
+    <div class="food-container">
+      <img src="/image/manzana.png" class="food" data-type="saludable" draggable="true">
+      <img src="/image/pastel.png" class="food" data-type="chatarra" draggable="true">
+      <img src="/image/agua.png" class="food" data-type="saludable" draggable="true">
+      <img src="/image/tamales.png" class="food" data-type="chatarra" draggable="true">
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button id="revisar">✅ Revisar mi plato</button>
+    <button id="reiniciar">🔄 Reiniciar</button>
+  </div>
+
+  <div id="mensaje"></div>
+
+  <script>
+    const foods = document.querySelectorAll('.food');
+    const plate = document.getElementById('plate');
+    const mensaje = document.getElementById('mensaje');
+    const revisarBtn = document.getElementById('revisar');
+    const reiniciarBtn = document.getElementById('reiniciar');
+    const itemsInPlate = [];
+
+    foods.forEach(food => {
+      food.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('type', food.dataset.type);
+        e.dataTransfer.setData('src', food.src);
+      });
+    });
+
+    plate.addEventListener('dragover', e => e.preventDefault());
+
+    plate.addEventListener('drop', e => {
+      e.preventDefault();
+      const type = e.dataTransfer.getData('type');
+      const src = e.dataTransfer.getData('src');
+
+      const rect = plate.getBoundingClientRect();
+      const x = e.clientX - rect.left - 30;
+      const y = e.clientY - rect.top - 30;
+
+      if (Math.hypot(x - 120, y - 120) > 130) return; // límite circular del plato
+
+      const img = document.createElement('img');
+      img.src = src;
+      img.classList.add('dropped');
+      img.style.left = `${x}px`;
+      img.style.top = `${y}px`;
+      plate.appendChild(img);
+      itemsInPlate.push(type);
+    });
+
+    revisarBtn.addEventListener('click', () => {
+      if (itemsInPlate.includes('chatarra')) {
+        mensaje.textContent = '⚠️ Tienes alimentos chatarra en tu plato, intenta otra vez.';
+        mensaje.className = 'error';
+      } else if (itemsInPlate.length === 0) {
+        mensaje.textContent = 'Tu plato está vacío 🍽️';
+        mensaje.className = 'error';
+      } else {
+        mensaje.textContent = '✅ ¡Excelente! Tu plato es saludable.';
+        mensaje.className = 'success';
+      }
+    });
+
+    reiniciarBtn.addEventListener('click', () => {
+      plate.innerHTML = '';
+      itemsInPlate.length = 0;
+      mensaje.textContent = '';
+    });
+  </script>
+</body>
+</html>
