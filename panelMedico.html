@@ -374,9 +374,12 @@ window.editarPaciente = (uidMedico, idPaciente) => {
 
   const nombre = card.querySelector("h3").innerText;
 
+  // Convertir edad eliminando " años"
+  const edadLimpia = d["Edad"] ? Number(d["Edad"].replace(" años", "").trim()) : "";
+
   card.querySelector(".datos").innerHTML = `
     <label><b>Nombre:</b><input type="text" id="nombre_${idPaciente}" value="${nombre}"></label>
-    <label><b>Edad (años):</b><input type="number" id="edad_${idPaciente}" value="${d['Edad'] || ''}"></label>
+    <label><b>Edad (años):</b><input type="number" id="edad_${idPaciente}" value="${edadLimpia}"></label>
     <label><b>Sexo:</b><input type="text" id="sexo_${idPaciente}" value="${d['Sexo'] || ''}"></label>
     <label><b>Tipo de sangre:</b><input type="text" id="sangre_${idPaciente}" value="${d['Tipo de sangre'] || ''}"></label>
     <label><b>Padre/Madre:</b><input type="text" id="padre_${idPaciente}" value="${d['Padre/Madre'] || ''}"></label>
@@ -395,6 +398,7 @@ window.editarPaciente = (uidMedico, idPaciente) => {
 /* === GUARDAR === */
 window.guardarCambios = async (uidMedico, idPaciente) => {
   const nombre = document.getElementById(`nombre_${idPaciente}`).value.trim();
+  const edad = Number(document.getElementById(`edad_${idPaciente}`).value);
   const sexo = document.getElementById(`sexo_${idPaciente}`).value.trim();
   const sangre = document.getElementById(`sangre_${idPaciente}`).value.trim();
   const padre = document.getElementById(`padre_${idPaciente}`).value.trim();
@@ -403,12 +407,12 @@ window.guardarCambios = async (uidMedico, idPaciente) => {
 
   await updateDoc(doc(db, "users", uidMedico, "patients", idPaciente), {
     childName: nombre,
+    ageYears: edad,
     sex: sexo,
     bloodType: sangre,
     parentName: padre,
     parentPhone: telefono,
-    birthPlace: lugar,
-    ageYears: Number(edad)
+    birthPlace: lugar
   });
 
   alert("Datos actualizados.");
@@ -452,3 +456,4 @@ document.addEventListener("click", (e) => {
   </script>
 </body>
 </html>
+
